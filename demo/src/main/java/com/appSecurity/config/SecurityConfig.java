@@ -1,6 +1,5 @@
 package com.appSecurity.config;
 
-import com.appSecurity.services.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,13 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private PersonDetailsService personDetailsService;
-
-    @Autowired
-    public SecurityConfig(PersonDetailsService personDetailsService) {
-        this.personDetailsService = personDetailsService;
-    }
 
     //собственная форма для логина
     @Override
@@ -35,11 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //настраивает аутентификацию
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(personDetailsService);
-    }
-
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();

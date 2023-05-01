@@ -1,7 +1,7 @@
 package com.appSecurity.util;
 
 import com.appSecurity.models.Person;
-import com.appSecurity.repositories.PeopleRepository;
+import com.appSecurity.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -9,11 +9,11 @@ import org.springframework.validation.Validator;
 
 @Component
 public class PersonValidator implements Validator {
-    private final PeopleRepository peopleRepository;
+    private final RegistrationService registrationService;
 
     @Autowired
-    public PersonValidator(PeopleRepository peopleRepository) {
-        this.peopleRepository = peopleRepository;
+    public PersonValidator(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
-        if (peopleRepository.findPersonByUsername(person.getUsername()) != null)
-            errors.rejectValue("username", "", "Person with this username already exists");
+        if (registrationService.getPersonByUsername(person.getUsername()).isPresent())
+        errors.rejectValue("username", "", "Person with this username already exists");
     }
 }
